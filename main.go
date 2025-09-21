@@ -1,12 +1,20 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
+	"os"
+	"strings"
+
 	"cd_proj/lexer"
 )
 
 func main() {
-	code := "print ( [hello] ) printf 123 + 45"
+	reader := bufio.NewReader(os.Stdin)
+	fmt.Print("Enter code: ")
+	code, _ := reader.ReadString('\n')
+	code = strings.TrimSpace(code) // remove newline
+
 	tokens := lexer.LexicalAnalysis(code)
 
 	fmt.Printf("%-10s | %-12s\n", "Lexeme", "Type")
