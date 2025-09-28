@@ -1,11 +1,10 @@
 package lexer
 
 import (
-	"cd_proj/models"
 	"regexp"
+	"cd_proj/models"
 )
 
-// Define sets like Python
 var Operators = []string{"+", "-", "/", "*", "%", "="}
 var Punctuation = []string{";", ",", "{", "}", "(", ")", "[", "]"}
 var Keywords = []string{
@@ -18,7 +17,6 @@ var Keywords = []string{
 	"async", "elif", "if", "or", "yield", "print", "printf",
 }
 
-// helper function
 func contains(list []string, item string) bool {
 	for _, v := range list {
 		if v == item {
@@ -28,8 +26,8 @@ func contains(list []string, item string) bool {
 	return false
 }
 
+// LexicalAnalysis splits code into tokens
 func LexicalAnalysis(code string) []models.Token {
-	// Regex will split into words, numbers, and single chars like ()[]{};
 	re := regexp.MustCompile(`[a-zA-Z_][a-zA-Z0-9_]*|\d+|[=+\-*/%{}()\[\];,]`)
 	matches := re.FindAllString(code, -1)
 
@@ -42,12 +40,9 @@ func LexicalAnalysis(code string) []models.Token {
 			tokens = append(tokens, models.Token{Lexeme: m, Type: models.Operator})
 		case contains(Punctuation, m):
 			tokens = append(tokens, models.Token{Lexeme: m, Type: models.Punctuation})
-		case regexp.MustCompile(`^\d+$`).MatchString(m):
-			tokens = append(tokens, models.Token{Lexeme: m, Type: models.Number})
 		default:
 			tokens = append(tokens, models.Token{Lexeme: m, Type: models.Identifier})
 		}
 	}
-
 	return tokens
 }
